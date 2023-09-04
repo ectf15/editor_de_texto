@@ -1,0 +1,43 @@
+﻿@using editor_de_texto.Modelos
+<button @onclick="Click" class="boton" disabled="@Disabled">
+    @if (IconPosition == Position.Start)
+    {
+        @if (!string.IsNullOrWhiteSpace(Icono))
+        {
+            <span class="material-icons">
+                @Icono
+            </span>
+        }
+        @Text
+    }
+    else
+    {
+        @Text
+        @if (!string.IsNullOrWhiteSpace(Icono))
+        {
+            <span class="material-icons">
+                @Icono
+            </span>
+        }
+    }
+</button>
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+
+    [Parameter]
+    public string Icono { get; set; }
+
+    [Parameter]
+    public Color Color { get; set; }
+
+    [Parameter]
+    public Position IconPosition { get; set; } = Position.Start;
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    [Parameter]
+    public EventCallback Click { get; set; }
+}

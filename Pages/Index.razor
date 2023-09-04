@@ -1,0 +1,117 @@
+﻿@using editor_de_texto.Modelos;
+@using System.Text;
+
+@page "/"
+<br />
+<div class="container botones">
+    <input class="ruta" type="text" @bind-value="@ruta" placeholder=" Ingrese la ruta..." />
+
+
+    <Button Text="Abrir" Click="AbrirArchivo" />
+    <Button Text="Crear" Click="CrearArchivo" />
+    <Button Text="Guardar" Click="GuardarArchivo" />
+</div>
+@if (alerta != "")
+{
+    <div class="alert alert-danger container" role="alert">
+        @alerta
+    </div>
+}
+
+
+<div class="container">
+    <br />
+    <input class="editor_texto" type="text" @bind-value="@contenido" />
+
+</div>
+
+@code {
+    private string ruta = "";
+    private string contenido = "";
+    private string alerta = "";
+    private bool archivoAbierto;
+    private string textoEncriptado = "";
+    private string textoDesencriptado = "";
+
+    void AbrirArchivo()
+    {
+
+        alerta = "";
+        if (ruta == "" || Path.GetExtension(ruta) != ".eli")
+        {
+            alerta = "Ingresa una ruta válida para abrir el archivo.";
+        }
+        else
+        {
+            try
+            {
+
+                if (!File.Exists(ruta))
+                {
+                    throw new Exception("Este archivo no existe, asegurese de que la ruta indicada sea correcta.");
+                }
+                textoEncriptado = File.ReadAllText(ruta);
+                contenido = Encoding.Unicode.GetString(Convert.FromBase64String(textoEncriptado));
+
+                archivoAbierto = true;
+            }
+            catch (Exception ex)
+            {
+                alerta = ex.Message;
+                contenido = "";
+                ruta = "";
+            }
+
+
+        }
+
+    }
+
+    void CrearArchivo()
+    {
+
+        alerta = "";
+        if (File.Exists(ruta))
+        {
+            alerta = "El archivo ya existe.!";
+            ruta = "";
+        }
+        else
+        {
+            if (Path.GetExtension(ruta) == ".eli")
+            {
+                textoEncriptado = Convert.ToBase64String(Encoding.Unicode.GetBytes(contenido));
+                File.WriteAllText(ruta, textoEncriptado);
+                alerta = "Archivo creado con éxito!.";
+                ruta = "";
+                contenido = "";
+            }
+            else { alerta = "Agregue la extensión .eli"; }
+        }
+    }
+
+    void GuardarArchivo()
+    {
+        if (archivoAbierto == true)
+        {
+            alerta = "";
+            if (ruta == "")
+            {
+                alerta = "Ingresa una ruta para guardar el archivo.";
+            }
+            else
+            {
+                textoEncriptado = Convert.ToBase64String(Encoding.Unicode.GetBytes(contenido));
+                File.WriteAllText(ruta, textoEncriptado);
+                alerta = "Archivo guardado.";
+                ruta = "";
+                contenido = "";
+                archivoAbierto = false;
+            }
+        }
+        else
+        {
+            alerta = "Para guardar primero debe crear o abrir un archivo.";
+        }
+    }
+}

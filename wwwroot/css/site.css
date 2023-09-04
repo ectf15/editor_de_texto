@@ -1,0 +1,47 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body, * {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+body {
+    background-image: url(../colorespasteles.jpg);
+}
+
+.editor_texto {
+    width: 900px;
+    height: 400px;
+    overflow: auto;
+}
+
+.ruta {
+    width: 680px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    max-width: 900px;
+    margin-top: 10px;
+}
+
+.botones {
+    justify-content: space-between;
+}
+
+.boton {
+    border-radius: 10px;
+    padding: 4px 6px;
+    background-color: #f3a5a5;
+    transition: background .3s ease-in-out;
+}
+
+    .boton:hover {
+        background-color: #ffd8d8;
+    }
